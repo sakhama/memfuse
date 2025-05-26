@@ -47,75 +47,84 @@
 
 ## Why MemFuse?
 
-Large-language-model apps are stateless out of the box.
-Once the context window rolls over, yesterday's chat, the user's name, or that crucial fact vanishes.
+Large language model applications are inherently stateless by design.
+When the context window reaches its limit, previous conversations, user preferences, and critical information simply disappear.
 
-**MemFuse** plugs a persistent, query-able memory layer between your LLM and a storage backend so agents can:
+**MemFuse** bridges this gap by providing a persistent, queryable memory layer between your LLM and storage backend, enabling AI agents to:
 
-- remember user preferences across sessions
-- recall facts & events thousands of turns later
-- trim token spend instead of resending the whole chat history
-- learn continuously and self-improve over time
+- **Remember** user preferences and context across sessions
+- **Recall** facts and events from thousands of interactions later
+- **Optimize** token usage by avoiding redundant chat history resending
+- **Learn** continuously and improve performance over time
+
+This repository contains the official server core services for seamless integration with MemFuse Client SDK. For comprehensive information about the MemFuse Client features, please visit the [MemFuse Client Python SDK](https://github.com/memfuse/memfuse-python).
 
 ## ✨ Key Features
 
-| Category                          | What you get                                                                                                                     |
-| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **Lightning fast**                | Efficient buffering (write aggregation, intelligent prefetching, query caching) for rapid performance                            |
-| **Unified Cognitive Search**      | Synergizes vector, graph, and keyword search with intelligent fusion & re-ranking for exceptional accuracy and diverse insights. |
-| **Cognitive Memory Architecture** | Human-inspired layered memory: L0 (raw data/episodic), L1 (structured facts/semantic), and L2 (knowledge graph/conceptual).      |
-| **Local-first**                   | Run the server locally or use Docker — no mandatory cloud fees                                                                   |
-| **Pluggable back-ends**           | Works with Chroma, Qdrant, pgvector, Neo4j, Redis, or any custom adapter (in progress)                                           |
-| **Multi-tenant support**          | Secure isolation between users, agents, and sessions with built-in scoping and access controls                                   |
-| **Framework-friendly**            | Drop-in providers for LangChain, AutoGen, Vercel AI SDK & raw OpenAI/Anthropic/Gemini/Ollama calls                               |
-| **Apache 2.0**                    | Fully open source. Fork, extend, or ship as you like                                                                             |
+| Category                          | What you get                                                                                                                      |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Lightning Fast**                | Efficient buffering with write aggregation, intelligent prefetching, and query caching for exceptional performance                |
+| **Unified Cognitive Search**      | Seamlessly combines vector, graph, and keyword search with intelligent fusion and re-ranking for superior accuracy and insights   |
+| **Cognitive Memory Architecture** | Human-inspired layered memory system: L0 (raw data/episodic), L1 (structured facts/semantic), and L2 (knowledge graph/conceptual) |
+| **Local-First**                   | Run the server locally or deploy with Docker — no mandatory cloud dependencies or fees                                            |
+| **Pluggable Backends**            | Compatible with Chroma, Qdrant, pgvector, Neo4j, Redis, and custom adapters (expanding support)                                   |
+| **Multi-Tenant Support**          | Secure isolation between users, agents, and sessions with robust scoping and access controls                                      |
+| **Framework-Friendly**            | Seamless integration with LangChain, AutoGen, Vercel AI SDK, and direct OpenAI/Anthropic/Gemini/Ollama API calls                  |
+| **Apache 2.0 Licensed**           | Fully open source — fork, extend, customize, and deploy as you need                                                               |
 
 ---
 
-## 🚀 Quick start
+## 🚀 Quick Start
 
 ### Installation
 
-First, ensure you have a MemFuse server running. To set up the MemFuse server locally:
+> **Note**: This repository contains the **MemFuse Core Server**. If you need to know more about the standalone Python SDK for client applications, please visit the [MemFuse Client Python SDK](https://github.com/memfuse/memfuse-python).
 
-1.  Clone the [main MemFuse repository](https://github.com/memfuse/memfuse):
+#### Setting Up the MemFuse Server
+
+To set up the MemFuse server locally:
+
+1.  Clone this repository:
+
     ```bash
     git clone https://github.com/memfuse/memfuse.git
     cd memfuse
     ```
-2.  Once in the `memfuse` directory, install its dependencies and run the server using one of the following methods:
 
-    **Using pip:**
+2.  Install dependencies and run the server using one of the following methods:
 
-    ```bash
-    pip install -e .
-    python -m memfuse_core
-    ```
-
-    **Or using Poetry:**
+    **Using Poetry (Recommended)**
 
     ```bash
     poetry install
     poetry run memfuse-core
     ```
 
-Then, install the MemFuse Python SDK:
+    **Using pip**
+
+    ```bash
+    pip install -e .
+    python -m memfuse_core
+    ```
+
+#### Installing the Client SDK
+
+To use MemFuse in your applications, install the Python SDK simply from PyPI
 
 ```bash
 pip install memfuse
 ```
 
-For detailed installation instructions, configuration options, and troubleshooting tips, see the [Installation Guide](https://memfuse.vercel.app/docs/installation).
+For detailed installation instructions, configuration options, and troubleshooting tips, see the online [Installation Guide](https://memfuse.vercel.app/docs/installation).
 
 ### Basic Usage
 
-Here's a basic example of how to use the MemFuse Python SDK with OpenAI:
+Here's a comprehensive example demonstrating how to use the MemFuse Python SDK with OpenAI to interact with the MemFuse server:
 
 ```python
 from memfuse.llm import OpenAI
 from memfuse import MemFuse
 import os
-
 
 memfuse_client = MemFuse(
   # api_key=os.getenv("MEMFUSE_API_KEY")
@@ -144,9 +153,9 @@ print(f"Response: {response.choices[0].message.content}")
 # Example Output: Response: Mars has a gravity of about 3.721 m/s², which is about 38% of Earth's gravity.
 ```
 
-<!-- Ask a follow-up question. MemFuse automatically recalls relevant context. -->
+### Contextual Follow-up
 
-Now, ask a follow-up question. MemFuse will automatically recall relevant context from the previous turn:
+Now, ask a follow-up question. MemFuse will automatically recall relevant context from the previous conversation:
 
 ```python
 # Ask a follow-up question. MemFuse automatically recalls relevant context.
@@ -159,16 +168,15 @@ print(f"Follow-up: {followup_response.choices[0].message.content}")
 # Example Output: Follow-up: Some challenges of living on Mars include its thin atmosphere, extreme temperatures, high radiation levels, and the lack of liquid water on the surface.
 ```
 
-🔥 That's it.
-Every subsequent call under the same scope automatically writes notable facts to memory and fetches them when relevant.
+🔥 **That's it!** Every subsequent call under the same scope automatically stores notable facts to memory and retrieves them when relevant.
 
 ---
 
 ## 📚 Documentation
 
-- [Installation Guide](https://memfuse.vercel.app/docs/installation): Detailed instructions for installing and configuring MemFuse
-- [Getting Started](https://memfuse.vercel.app/docs/quickstart): Guide to using MemFuse in your projects
-- [Examples](https://github.com/memfuse/memfuse-python/tree/main/examples): Sample code for chat-bots, autonomous agents, customer support, LangChain integration, etc.
+- **[Installation Guide](https://memfuse.vercel.app/docs/installation)**: Comprehensive instructions for installing and configuring MemFuse
+- **[Getting Started](https://memfuse.vercel.app/docs/quickstart)**: Step-by-step guide to integrating MemFuse into your projects
+- **[Examples](https://github.com/memfuse/memfuse-python/tree/main/examples)**: Sample implementations for chatbots, autonomous agents, customer support, LangChain integration, and more
 
 ---
 
@@ -176,30 +184,31 @@ Every subsequent call under the same scope automatically writes notable facts to
 
 ### 📦 Phase 1 – MVP ("Fast & Transparent Core")
 
-- [x] Lightning-fast—Efficient buffering (write aggregation, intelligent prefetching, query caching) for rapid performance
-- [x] Level 0 Memory Layer—raw chat history
-- [x] Multi-tenant support
-- [ ] Level 1 Memory Layer—semantic/episodic memories
-- [x] Re-ranking plugin–LLM-powered memory scoring
-- [x] Python SDK
-- [x] Benchmarks: LongMemEval + MSC
+- [x] **Lightning-fast performance** — Efficient buffering with write aggregation, intelligent prefetching, and query caching
+- [x] **Level 0 Memory Layer** — Raw chat history storage and retrieval
+- [x] **Multi-tenant support** — Secure user, agent, and session isolation
+- [ ] **Level 1 Memory Layer** — Semantic and episodic memory processing
+- [x] **Re-ranking plugin** — LLM-powered memory relevance scoring
+- [x] **Python SDK** — Complete client library for Python applications
+- [x] **Benchmarks** — LongMemEval and MSC evaluation frameworks
 
 ### 🧭 Phase 2 – Temporal Mastery & Quality
 
-- [ ] JavaScript SDK
-- [ ] Multimodal memory support
-- [ ] Level 2 KG memory support
-- [ ] Time-decay policies–automatic forgetting of stale items
+- [ ] **JavaScript SDK** — Client library for Node.js and browser applications
+- [ ] **Multimodal memory support** — Image, audio, and video memory capabilities
+- [ ] **Level 2 KG memory support** — Knowledge graph-based conceptual memory
+- [ ] **Time-decay policies** — Automatic forgetting of stale information
 
-Have an idea? Open an issue or vote on the discussion board!
+💡 **Have an idea?** Open an issue or participate in our discussion board!
 
 ## 🤝 Community & Support
 
-- GitHub Discussions: roadmap votes, RFCs, Q&A
+- **GitHub Discussions**: Participate in roadmap votes, RFCs, and Q&A sessions
+- **Issues**: Report bugs and request new features
+- **Documentation**: Comprehensive guides and API references
 
-If MemFuse saves you time, please ⭐ star the repo — it helps the project grow!
+If MemFuse enhances your projects, please ⭐ **star the repository** — it helps the project grow and reach more developers!
 
 ## License
 
-This MemFuse Core Services repo is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for more details.
-(You'll need to add a LICENSE file to this repository, typically a copy of the Apache 2.0 license text).
+This MemFuse Server repository is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for complete details.
