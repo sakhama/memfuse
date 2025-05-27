@@ -606,6 +606,31 @@ class MemoryService:
             "errors": None,
         }
 
+    async def get_messages_by_session(
+        self,
+        session_id: str,
+        limit: Optional[int] = None,
+        sort_by: str = 'timestamp',
+        order: str = 'desc'
+    ) -> List[Dict[str, Any]]:
+        """Get messages for a session with optional limit and sorting.
+
+        Args:
+            session_id: Session ID
+            limit: Maximum number of messages to return (optional)
+            sort_by: Field to sort by, either 'timestamp' or 'id' (default: 'timestamp')
+            order: Sort order, either 'asc' or 'desc' (default: 'desc')
+
+        Returns:
+            List of message data
+        """
+        return self.db.get_messages_by_session(
+            session_id=session_id,
+            limit=limit,
+            sort_by=sort_by,
+            order=order
+        )
+
     async def update(self, message_ids: List[str], new_messages: List[Dict[str, str]]) -> Dict[str, Any]:
         """Update messages in memory.
 

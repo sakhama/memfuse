@@ -384,6 +384,56 @@ class MemoryServiceProxy:
                 ],
             }
 
+    async def get_messages_by_session(
+        self,
+        session_id: str,
+        limit: Optional[int] = None,
+        sort_by: str = 'timestamp',
+        order: str = 'desc'
+    ) -> List[Dict[str, Any]]:
+        """Get messages for a session with optional limit and sorting.
+
+        This method adds validation and error handling before delegating
+        to the underlying memory service.
+
+        Args:
+            session_id: Session ID
+            limit: Maximum number of messages to return (optional)
+            sort_by: Field to sort by, either 'timestamp' or 'id' (default: 'timestamp')
+            order: Sort order, either 'asc' or 'desc' (default: 'desc')
+
+        Returns:
+            List of message data
+        """
+        try:
+            # Validate session exists
+            session = self.db.get_session(session_id)
+            if not session:
+                logger.warning(f"Session {session_id} not found")
+                return []
+
+            # Delegate to the underlying memory service
+            if hasattr(self._memory_service, 'get_messages_by_session'):
+                return await self._memory_service.get_messages_by_session(
+                    session_id=session_id,
+                    limit=limit,
+                    sort_by=sort_by,
+                    order=order
+                )
+            else:
+                # Fallback to direct database access
+                return self.db.get_messages_by_session(
+                    session_id=session_id,
+                    limit=limit,
+                    sort_by=sort_by,
+                    order=order
+                )
+
+        except Exception as e:
+            # Handle exceptions
+            logger.error(f"Error getting messages by session: {str(e)}")
+            return []
+
     async def update(self, message_ids: List[str], new_messages: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Update messages in memory.
 
