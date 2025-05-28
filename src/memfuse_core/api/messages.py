@@ -280,19 +280,54 @@ async def list_messages(
             )
 
         # Validate session
-        _, error_response = await validate_session(session_id)
+        session, error_response = await validate_session(session_id)
         if error_response:
             return error_response
 
-        # Get messages directly from database with limit and sorting
-        from ..services.database_service import DatabaseService
-        db = DatabaseService.get_instance()
-        messages = db.get_messages_by_session(
-            session_id=session_id,
-            limit=limit_value,
-            sort_by=sort_by,
-            order=order
-        )
+        # Get the appropriate service (Buffer or Memory) for this session
+        if session is None:
+            return ApiResponse.error(
+                message="Invalid session data",
+                code=500,
+                errors=[
+                    ErrorDetail(
+                        field="session_id",
+                        message="Session data is invalid"
+                    )
+                ]
+            )
+
+        service = await get_service_for_session(session, session_id)
+        if not service:
+            return ApiResponse.error(
+                message="Failed to get service",
+                code=500,
+                errors=[
+                    ErrorDetail(
+                        field="general",
+                        message="Memory or buffer service unavailable"
+                    )
+                ]
+            )
+
+        # Get messages through the service (which handles both buffer and direct database access)
+        if hasattr(service, 'get_messages_by_session'):
+            messages = await service.get_messages_by_session(
+                session_id=session_id,
+                limit=limit_value,
+                sort_by=sort_by,
+                order=order
+            )
+        else:
+            # Fallback to direct database access if service doesn't support the method
+            from ..services.database_service import DatabaseService
+            db = DatabaseService.get_instance()
+            messages = db.get_messages_by_session(
+                session_id=session_id,
+                limit=limit_value,
+                sort_by=sort_by,
+                order=order
+            )
 
         return ApiResponse.success(
             data={"messages": messages},

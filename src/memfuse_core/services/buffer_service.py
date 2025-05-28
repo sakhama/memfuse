@@ -327,6 +327,81 @@ class BufferService(MemoryInterface, ServiceInterface):
         # Direct delegation to memory service (no complex buffer lookup)
         return await self.memory_service.read(item_ids)
 
+    async def get_messages_by_session(
+        self,
+        session_id: str,
+        limit: Optional[int] = None,
+        sort_by: str = 'timestamp',
+        order: str = 'desc'
+    ) -> List[Dict[str, Any]]:
+        """Get messages for a session with optional limit and sorting.
+
+        This method combines messages from the buffer and the underlying memory service
+        to provide a complete view of all messages in the session.
+
+        Args:
+            session_id: Session ID
+            limit: Maximum number of messages to return (optional)
+            sort_by: Field to sort by, either 'timestamp' or 'id' (default: 'timestamp')
+            order: Sort order, either 'asc' or 'desc' (default: 'desc')
+
+        Returns:
+            List of message data
+        """
+        if not self.memory_service:
+            return []
+
+        # Get messages from the underlying memory service
+        if hasattr(self.memory_service, 'get_messages_by_session'):
+            stored_messages = await self.memory_service.get_messages_by_session(
+                session_id=session_id,
+                limit=None,  # Get all stored messages first, we'll apply limit later
+                sort_by=sort_by,
+                order=order
+            )
+        else:
+            # Fallback to direct database access
+            from ..services.database_service import DatabaseService
+            db = DatabaseService.get_instance()
+            stored_messages = db.get_messages_by_session(
+                session_id=session_id,
+                limit=None,  # Get all stored messages first, we'll apply limit later
+                sort_by=sort_by,
+                order=order
+            )
+
+        # Get messages from write buffer that belong to this session
+        buffer_messages = []
+        if hasattr(self.write_buffer, 'items'):
+            for item in self.write_buffer.items:
+                if isinstance(item, dict):
+                    item_session_id = item.get('metadata', {}).get('session_id')
+                    if item_session_id == session_id:
+                        # Convert buffer item to message format
+                        buffer_message = {
+                            "id": item.get('id', ''),  # Buffer items might not have IDs yet
+                            "role": item.get('role', 'user'),
+                            "content": item.get('content', ''),
+                            "created_at": item.get('created_at', ''),
+                            "updated_at": item.get('updated_at', ''),
+                        }
+                        buffer_messages.append(buffer_message)
+
+        # Combine stored and buffer messages
+        all_messages = stored_messages + buffer_messages
+
+        # Sort combined messages
+        if sort_by == 'timestamp':
+            all_messages.sort(key=lambda x: x.get('created_at', ''), reverse=(order == 'desc'))
+        elif sort_by == 'id':
+            all_messages.sort(key=lambda x: x.get('id', ''), reverse=(order == 'desc'))
+
+        # Apply limit if specified
+        if limit is not None and limit > 0:
+            all_messages = all_messages[:limit]
+
+        return all_messages
+
     async def update(self, item_ids: List[str], new_items: List[Any]) -> Dict[str, Any]:
         """Update items in memory.
 
